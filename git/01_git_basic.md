@@ -1,10 +1,10 @@
-### git basic
+# git basic
 
 git의 기초를 배워요
 
 
 
-### WARNING
+## WARNING
 
 1. Home 폴더(~)를 리포로 업그레이드 하지 않는다.
 
@@ -12,7 +12,7 @@ git의 기초를 배워요
 
    
 
-#### 저장소 초기화하기
+### 저장소 초기화하기
 
 ```$ git init
 $ git init
@@ -20,7 +20,7 @@ $ git init
 
 
 
-#### 저장소를 일반 디렉토리로 되돌리기
+### 저장소를 일반 디렉토리로 되돌리기
 
 ```
 $ rm -rf .git
@@ -35,11 +35,12 @@ $ git status
 ```
 
 - 빨간색으로 표시되는 파일은 commit에 포함되지 않음
-
 - 초록색으로 표시되는 파일은 commit에 포함됨
 - 변경사항이 없는 파일은 표시되지 않음
 
-#### STAGE에 올리기(staging)
+
+
+### STAGE에 올리기(staging)
 
 특정 파일만 스테이지에 올리기
 
@@ -55,7 +56,7 @@ $ git add .
 
 
 
-#### commit을 통해 스냅샷 저장하기
+### commit을 통해 스냅샷 저장하기
 
 ```
 $ git commit -m 'message'
