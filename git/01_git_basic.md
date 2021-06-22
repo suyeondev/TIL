@@ -93,7 +93,7 @@ $ git restore <file_name>
 
 ```
 $ git log
-$ git log --online
+$ git log --oneline
 ```
 
 
@@ -124,19 +124,51 @@ $ git push <name> <branch>
 
 ### 리모트에서 최초 CLONE 받기
 
-리모트 리포 내용을 그대로 복제
+리모트 리포 내용을 그대로 복제 (환경이 바뀌고 최초에 처음에만 clone 으로 함! -Why? 리포안에 리포가 있으면 안되는데 clone 2번하면 리포안에 리포가 생성되기 때문에 )
 
 ``` 
 $ git clone <url> 
 ```
 
-
-
-
-
-
+참고) <url> - 깃허브 홈페이지에서 리포안에 코드 다운받는 곳에서 url 복사한 것 
 
 ### 리모트에서 PULL하기
 
 리모트에서 다운로드
+
+``` 
+$ git pull <name> <branch>
+ex) git pull origin master
+```
+
+
+
+### 강의장 <=> 집 공부 / 프로젝트 시나리오
+
+> 앉을때 PULL , 일어설 때 PUSH
+>
+> Sit pull, Stand push
+
+1. 집에서 기상
+
+2. 강의장 도착
+
+3. 공부/ TIL 정리
+
+   ​	1. `commit`
+
+4. 강의종료
+
+5. 집도착
+6. 복습
+   1. (처음이라면) `clone`
+   2. `pull`
+   3. `commit`
+7. 복습 끝
+   1. `commit`
+   2. `push`
+8. 잠
+9. 1번으로 이동
+
+
 
