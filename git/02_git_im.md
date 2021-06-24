@@ -143,5 +143,5 @@ $ git branch -D <branch_name>
    1. 충돌(conflict)이 난다면, 논의후 `Resolve conflicts`로 리모트에서 직접 수정
    2. `commit merge`로 확정
 7. 팀원들은 local master 에서 `git pull origin master`를 통해 모든 변경 내용 PULL
-8. 3번으로
+8. 3번으로 돌아가 반복진행
 
