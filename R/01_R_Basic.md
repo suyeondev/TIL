@@ -8,7 +8,7 @@
 
 > 미국 유명 IT 컨설팅 없체인 가트너(Gartner Inc.) 는 빅데이터를 3V,데이터 규모(High-Volume), 빠른 입출력 속도(High-Velocity),다양성(High-Variety)으로 정의하였다. 
 
-![img](https://post-phinf.pstatic.net/MjAxODExMjlfMTQ4/MDAxNTQzNDU2ODA5Mzg3.qym5mRsJBaUoz6It90ry6UvCjHfjGtyyolDeDDe1uWAg.GB7F-52ytp7MLfKxRTyPt6MZuqDw-vrx2imaFvJNNIcg.PNG/R%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B6%84%EC%84%9D1.PNG?type=w1200)
+![img](https://post-phinf.pstatic.net/MjAxODExMjlfMTQ4/MDAxNTQzNDU2ODA5Mzg3.qym5mRsJBaUoz6It90ry6UvCjHfjGtyyolDeDDe1uWAg.GB7F-52ytp7MLfKxRTyPt6MZuqDw-vrx2imaFvJNNIcg.PNG/R%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B6%84%EC%84%9D1.PNG?type=w1200) 
 
  							 ▲가트너의 빅데이터 3V 모델
 
@@ -140,10 +140,12 @@
 
 - 패키지를 사용하려면 먼저 설치를 해야하고, 그안에 포함된 함수를 사용하려면 상자를 열고 꺼내야한다.(로드)
 
-  - ```R
-    install.packages("설치할 패키지명") #설치
-    library(로드할 패키지명)			 #로드			
-    ```
+  ```R
+  install.packages("설치할 패키지명") #설치
+  library(로드할 패키지명) #로드			
+  ```
 
-    
+  
+
+  
 
