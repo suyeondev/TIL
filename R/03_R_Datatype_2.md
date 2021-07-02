@@ -61,7 +61,7 @@
   [3,]    3    6
   ```
 
-- <span style="color:blue">**t()**</span> , <span style="color:blue">**row() **</span>, <span style="color:blue">**col()**</span> 함수
+- <span style="color:blue">**t()**</span> , <span style="color:blue">**row()**</span>, <span style="color:blue">**col()**</span> 함수
 
   - t() 	 : 행과 열을 전환해주는 함수
   - row() : row의 index번호를 알려주는 함수
@@ -152,7 +152,7 @@
   # 행렬곱할때, 앞행렬의 열의개수와 뒷행렬의 행의 개수가 같아야 함
   ```
 
-- <span style="color:blue">**apply() **</span>함수 :vector 또는 matrix를 데이터로 받아서 임의의 함수를 적용한 결과를 얻는 함수
+- <span style="color:blue">**apply()**</span>함수 :vector 또는 matrix를 데이터로 받아서 임의의 함수를 적용한 결과를 얻는 함수
 
   - **apply( data,  방향,  함수 )**
 
@@ -176,7 +176,7 @@
     [1] 3 6 9
     ```
 
-- <span style="color:blue">**rowSums() **</span>, <span style="color:blue">**colSums()**</span>, <span style="color:blue">**rowMeans()**</span>, <span style="color:blue">**colMeans() **</span> 함수 
+- <span style="color:blue">**rowSums()**</span>, <span style="color:blue">**colSums()**</span>, <span style="color:blue">**rowMeans()**</span>, <span style="color:blue">**colMeans()**</span> 함수 
 
   - 이 함수들 사용시 apply 안써도 가능!
 
@@ -186,7 +186,8 @@
 
   ```R
   order(iris[,1], decreasing = T)  # iris 데이터의 첫번째 열을 기준으로 내림차순 정렬한 순서를 index로 반환
-  iris[order(iris[,1], decreasing = T),] #반환된 인덱스를 다시 행인덱스로 넣어준것 -> 내림차순 정렬된 순서에 맞게 iris data가 재정렬 된상태
+  iris[order(iris[,1], decreasing = T),] #반환된 인덱스를 다시 행인덱스로 넣어준것 
+  #→ 내림차순 정렬된 순서에 맞게 iris data가 재정렬 된상태
   
   #모든 데이터는 벡터를 이용해서 만든다
   ```
