@@ -728,15 +728,6 @@ sampleDF[-1,"x",drop =F]  #drop = F 를 옵션으로 줘야함
 
   
 
-
-  #1 index 그룹 안에 합을 구한 것. -> 55라는 리턴값
-  tapply(1:10,1:10,sum)  #1부터 10까지 index에 1부터 10까지 그룹이 묶임
-  #1~10까지 숫자를 홀수 짝수별로 묶어서 합계
-  x <- 1:10
-  tapply(x,ifelse(x%%2 ==1, 1,2), sum)
-
-  tapply(x,1:10 %% 2 == 0 ,sum)
-
 - **ifesle ()** 함수 
 
   -  **ifelse( 조건 , 참일때 값 , 거짓일때 값 )**  
@@ -944,17 +935,62 @@ sampleDF[-1,"x",drop =F]  #drop = F 를 옵션으로 줘야함
     150          5.9          5.1  virginica
     ```
 
-- 
+- **aggregate()** 함수
+
+  - **aggregate(x, by, FUN)**
+
+    -  **x** : R의 객체 모두 가능,
+    -  **by** : 기준,  factor이면서 list형이어야함!  
+    -  **FUN** : 적용할 함수
+    - 반환값은 데이터프레임이다.
+
+    
+
+    ```R
+    height <- c(180,172,165,181,178,163,158,175,190)
+    gender <- c('m','m','f','m','m','f','f','m','m')
+    height.gender.df <- data.frame(height,gender) # 성별과 키로 구성된 데이터 프레임 생성
+    
+    height.gender.df$gender <- as.factor(gender) # aggregate함수 활용을 위해 by로 들어갈 gender를 factor로 만들어줌.
+    with(height.gender.df, aggregate(height,list(gender),mean))
+    # 실행 결과
+      Group.1        x
+    1       f 162.0000
+    2       m 179.3333
+    ```
 
 
 
+- **formula(가져올 칼럼 ~ 기준, 데이터셋)**
 
+  - 기준이 '.' 일 경우 전체를 의미
 
+  - 기준칼럼이 1개 이상이면 칼럼사이를 +로 연결
 
+  - formula 사용시 with가 의미가 없어짐
 
+    ```R
+    car.df<-mtcars  #데이터프레임 생성
+    
+    # carb , gear 컬럼 기준으로 disp, wt 평균
+    
+    aggregate(cbind(disp,wt)~carb+gear,car.df,mean) #기준칼럼이 1개 이상이라 +로 연결해줌.
+    # 실행 결과
+       carb gear     disp       wt
+    1     1    3 201.0333 3.046667
+    2     2    3 345.5000 3.560000
+    3     3    3 275.8000 3.860000
+    4     4    3 416.4000 4.685800
+    5     1    4  84.2000 2.072500
+    6     2    4 121.0500 2.683750
+    7     4    4 163.8000 3.093750
+    8     2    5 107.7000 1.826500
+    9     4    5 351.0000 3.170000
+    10    6    5 145.0000 2.770000
+    11    8    5 301.0000 3.570000
+    ```
 
-
-
+    
 
 ## 형변환 함수
 
