@@ -1,145 +1,72 @@
 # 05. 데이터 가공
 
-#산술연산자
-# <-, =, +, -, * , / : 나누기, %% : 나머지, %/% :몫, ^:제곱
-#관계연산자
-# == :동등비교, != :같지않다, >, >=, < <=
-#논리연산자(TRUE, FALSE, T, F)
-# &,|,xor
+## 데이터 분석의 기초, 연산자
 
-# 제어구문 & 반복구문
-# 제어구문 - if, switch
-# 반복구문 - for, while, do - while
+### 산술연산자
 
-# if ,if - else ,if - else if - else
-# 단일조건일 경우 ifelse(조건, T일때, F일때)
-data.logical <- T
+| 산술연산자       | 기능   |
+| ---------------- | ------ |
+| **+**            | 더하기 |
+| **-**            | 빼기   |
+| *****            | 곱하기 |
+| **/**            | 나누기 |
+| **%/%**          | 몫     |
+| **%%**           | 나머지 |
+| **\**  또는  ^** | 제곱   |
 
-#if(조건식 -T/F를 return해야함.){
-#  
-#}else{
-#  
-#}
+### 비교 연산자
 
-if(data.logical){
-  print("true")
-}else{
-  print("false")
-}
-score <- 55
-if(score >= 60){
-  print("합격")
-}else{
-  print("불합격")
-}
+- 다양한 데이터를 서로 비교하여 TRUE 또는 FALSE와 같은 진리 값을 반환할 때 사용한다.
 
-#scan() - console로부터 데이터 입력받는 함수
-
-grade <-""
-
-if (score >= 90){
-  grade <-"A"
-}else if(score>=80){
-  grade <-"B"
-}else if(score>=70){
-  grade <-"C"
-}else if(score>=60){
-  grade <-"D"
-}else {
-  grade <-"F"
-}
-grade
-
-cat("당신의 점수는", score,"점이고, 당신의 학점은 ",grade,"입니다.")
-sprintf("당신의 점수는 %d 이고, 당신의 학점은 %s입니다",score,grade)
-
-#주민번호를 가지고 남자 여자를 구분한다면?
-user.ssn<- "730910-1xxxxxx"
-str_sub(user.ssn,8)
-gender <- substr(user.ssn,8,8)
-
-if(gender == '1' |gender =='3'){
-  print('남자')
-}else{
-  print('여자')
-}
+| 비교연산자 | 기능                 |
+| ---------- | -------------------- |
+| **>**      | 크다 ( 초과 )        |
+| **>=**     | 크거나 같다 ( 이상 ) |
+| **<**      | 작다 ( 미만 )        |
+| **<=**     | 작거나 같다 ( 이하 ) |
+| **==**     | 같다                 |
+| **!=**     | 같지 않다            |
 
 
-#ifelse  ->입력도 벡터고, 출력도 벡터일때만 가능!
-ifelse(gender =='1'|gender =='3','남자','여자')
 
-scores <- c(96,91,100,88,90)
-ifelse(scores >= 90, 'pass', 'fail')
+### 논리연산자  (= 불연산자 Boolean Operator)(TRUE, FALSE, T, F)
 
-#평균을 구한다면?
-na.vec <-c(96,91,100,88,90,NA,95,100,NA,90)
+- 비교연산자를 통해 얻은 진리값을 다시 연산할 때 사용한다. 
 
-
-ifelse(sum(is.na(na.vec))>=1, mean(na.vec,na.rm =T))
-ifelse(is.na(na.vec), mean(na.vec,na.rm =T), mean(na.vec))
-#외부파일 불러오기
-tmp.csv <- read.csv(file.choose())
-str(tmp.csv)
-
-tmp.csv$q5
-q6<-ifelse(tmp.csv$q5 >=3 ,"bigger","smaller")
-table(tmp.csv$q5)
-#파일에 칼럼추가 (전처리과정 중 하나)
-tmp.csv$q6 <- q6
-#factor로 바꿔줌
-tmp.csv$q6 <- as.factor(tmp.csv$q6)
-str(tmp.csv)
-table(tmp.csv$q6) #빈도수 
-with(tmp.csv, tapply(q5,q6,sum))
-
-tmp.csv <- read.csv(file.choose())
-str(tmp.csv)
-#특정 행을 가져와야 한다면, 조건에 만족하는 행 index얻어와야한다.
-x <- c(1,2,3,4,5,6,7)
-x
-
-which(x==6) #x가 6인 값의 인덱스번호 리턴
-tmp.csv[which(tmp.csv$State == 'Hawaii'),]
+| **논리연산자** | **기능**       |
+| -------------- | -------------- |
+| **&**          | 그리고 ( and ) |
+| **\|**         | 또는 ( or )    |
 
 
-#switch(data,case 구문,case 구문,case 구문) 동등비교의 조건
-user.name <- scan(what = character())  #what = 으로 들어올수 있는 데이터 형 지정해주는 것.
-user.name
 
-switch(user.name,
-       '섭섭해'=30,
-       '입정섭'=40,
-       '임섭순'=50)
+## 분석을 위한 데이터 기본 정리
 
-#반복문 - for
-#for(변수 in 시퀀스 값){
-#
-#}
-user.sum = 0
-for(n in 1:10){
-  user.sum <- user.sum + n
-}
-user.sum
+### 데이터 파악 함수 사용하기
 
-for(idx in 1:10){
-  if(idx %% 2 != 0){
-    cat(idx,'\t')
+| 데이터 파악 함수 | 활용 예시        | 설명                                                 |
+| ---------------- | ---------------- | ---------------------------------------------------- |
+| **View()**       | View(데이터세트) | View 창을 통해 데이터 세트의 데이터 확인             |
+| **str()**        | str(데이터세트)  | 데이터 세트에 있는 변수의 속성과 데이터 형태 확인    |
+| **dim()**        | dim(데이터세트)  | 데이터 세트의 행과 열을 확인하여 데이터 프레임 확인  |
+| **ls()**         | ls(데이터세트)   | 데이터세트의 변수 항목을 리스트로 만듦 (변수명 확인) |
 
-  }
-}
 
-# 1~100사이에 홀수, 짝수의 합을 출력한다면?
-odd_sum <- 0
-even_sum <- 0
-for(idx in 1:100){
-  if(idx %%2 != 0){
-    odd_sum <- odd_sum +idx
-    
-  }else{
-    even_sum <- even_sum + idx
-  }
-}
-cat("odd_sum= ",odd_sum,"even_sum = " ,even_sum)
 
-setequal(c('a','b','c'),c('a','b'))
+### 변수명 변경하기
+
+- rename() :  변수 명을 변경해주는 함수!
+
+  - **rename(데이터 세트, 새 변수명 = 기존 변수명)**
+  - 새 변수명과 기존 변수명 위치 혼동하지 않기!!! 
+  - rename 함수만 실행하고 데이터세트에 <- 으로 반영해주지 않으면, 데이터세트에 결과 적용X
+
+  
+
+### 파생변수 생성하기
+
+- 파생 변수 생성: 보유한 데이터를 기반으로 연산 작업 등을 이용해 새로운 결과를 얻고, 그 결과로 새로운 변수를 생성하는 것.
+- 변수의 특징에 따라 다양한 시각으로 분석할 수 있도록 추가로 생성하는 변수! 
+
+
 
