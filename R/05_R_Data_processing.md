@@ -88,7 +88,24 @@
       exdata$age50_YN <- ifelse(exdata$age >= 50, "Y", "N") 
       ```
 
+
+- **mutate 함수**
+
+  - **mutate( 데이터 세트 , 추가할 열 이름 = 조건1, ... )**
+
+  - mutate함수의 장점 - mutate()를 통해 새로 만든 파생변수를 생성과 동시에 바로 인자로 다시 넣어서 사용 가능
+
+    - transform함수도 새로운 열 추가 가능!  But, 생성과 동시에 사용할수는 없음.
+
+    - **transform( 데이터 세트,추가할 열 이름 = 조건1, ... )**
+
+      ```R
+      mutate(exdata, mpg_rank = rank(mpg)) # exdata에 mpg_rank열을 추가하고, rank()함수로 mpg 열의 순위를 구한 후 할당
+      ```
+
       
+
+
 
 ## 데이터 추출부터 정제까지, 데이터 전처리
 
@@ -183,3 +200,137 @@ library(dplyr) # dplyr 패키지 로드
 
     
 
+#### 데이터 요약하기
+
+- **summarise 함수** 
+
+  - 통계량을 구할 수 있는 함수.  Dataframe으로 결과값이 반환된다.
+
+  - **summarise( 새변수명 = FUN(변수명) )**
+
+    ```R
+    # exdata 데이터 세트의 Y17_AMT(17년도 이용 금액) 변수 값 합계를 TOTAL_Y17_AMT 변수로 도출.
+    exdata %>%
+    	summarise(TOTAL_Y17_AMT = sum(Y17_AMT)) 
+    ```
+
+    
+
+- **group_by 함수**
+
+  - **group_by( 변수명 )**
+
+  - 해당 변수를 기준으로 그룹을 만들어 주는 함수.
+
+    ```R
+    # exdata 데이터 세트의 AREA(지역) 변수 값 별로 Y17_AMT(17년도 이용 금액)를 더해 SUM_Y17_AMT 변수로 도출
+    exdata %>%
+    	group_by(AREA) %>%
+    		summarise(SUM_Y17_AMT = sum(Y17_AMT))
+    ```
+
+    
+
+#### 데이터 결합하기
+
+- **rbind(), cbind(), merge()**
+
+  - **rbind() 함수** :  행 결합 (위 + 아래) 
+
+    - **rbind( 데이터 세트 1, 데이터 세트 2)**
+
+    - rbind() 를 하기 위해서는 결합하려는 **두개의 데이터 세트의 열의 개수와 속성, 이름이 같아야 사용 가능!**
+
+      ```R
+      d1 <- data.frame(id = c("id1","id2","id3"),
+                       age = c(10,20,30))
+      d2 <- data.frame(id = c("id4","id5","id6"),
+                       age =c(15,25,35) )
+      
+      rbind(d1, d2)
+      # 실행 결과 
+         id age
+      1 id1  10
+      2 id2  20
+      3 id3  30
+      4 id4  15
+      5 id5  25
+      6 id6  35
+      ```
+
+  - **cbind() 함수** : 열 결합 (왼쪽 + 오른쪽)
+
+    - **cbind( 데이터 세트 1 + 데이터 세트 2 )**
+
+    - cbind() 를 하기 위해서는 결합하려는 **두개의 데이터 세트의 행의 개수와 행이 서로 동일 대상이어야 사용 가능!** 
+
+      ```R
+      d1 <- data.frame(id = c("id1","id2","id3"),
+                       age = c(10,20,30))
+      d3 <- data.frame(gender = c("F","M","F"),
+                       area = c("서울","경기도","강원도") )
+      cbind(d1,d3)
+      # 실행 결과
+         id age gender   area
+      1 id1  10      F   서울
+      2 id2  20      M  경기도
+      3 id3  30      F  강원도
+      
+      ```
+
+  - **merge() 함수** :  동일 key 값 기준 결합 
+
+    - **merge( 데이터 세트 1 , 데이터 세트 2 , by = 'key')**
+
+    - 서로 다른 순서로 저장되어 있는 데이터라고 해도,  동일한 data 칼럼의 이름이 있으면 공통 칼럼을 내부적으로 찾아서 연결해준다. 단, 공통의 기준을 잡을 수 있는 컬럼이 있어야함.
+
+    - 만약, 공통의 기준으로 잡을 수 있는 컬럼이 있지만, 이름이 다를땐 colnames함수를 활용해서 이름 같게 해주는 과정 필요 => 전처리 과정 중 하나! 
+
+      ```R
+      d1 <- data.frame(id = c("id1","id2","id3"),
+                       age = c(10,20,30))
+      d4 <- data.frame(id = c("id2","id1","id3"),
+                       area = c("서울","경기도","강원도"))
+      merge(d1 , d4)
+      # 실행 결과     # d4의 id의 순서가 달랐지만, key값인 id 기준으로 잘 매칭된 것 확인 가능
+         id age   area
+      1 id1  10  경기도
+      2 id2  20   서울
+      3 id3  30  강원도
+      ```
+
+      
+
+- **join() 함수 **: key값을 기준으로 두개의 프레임을 병합
+
+  - **join(data1, data2, by = 공통되는 기준칼럼명, type= 어떤 join할건지 )**
+
+    - type에 들어갈 수 있는 값 : **inner (join), left (join), right (join), full (join)**
+    - type = 'inner' : 기준 key가 같은 경우만 join
+    - type = 'left'  : 왼쪽 dataframe의 key값 기준으로 join
+    - type = 'right' : 오른쪽 dataframe의 key값 기준으로 join
+    - type = 'full'  : 양쪽 dataframe의 key값 모두 포함해서 join
+    - by = 기준칼럼명 : 병합해서 여러개 가능, composite key처럼!
+      - ex) by = c('id','gender') 
+
+    ```R 
+    tmp.x.df <- data.frame(
+      id=c(1,2,3,4,5),
+      height = c(160,175,180,177,194)
+    )
+    tmp.y.df <- data.frame(
+      id=c(5,4,3,2,1),
+      weight = c(55, 77, 90,78,95)
+    )
+    # id를 기준으로 inner join.
+    inner.df <- plyr::join(tmp.x.df, tmp.y.df, by = 'id', type = 'inner') # plyr::join : plyr 패키지의 join함수를 지칭해주는 것. 
+    
+    inner.df
+    # 실행 결과
+      id height weight
+    1  1    160     95
+    2  2    175     78
+    3  3    180     90
+    4  4    177     77
+    5  5    194     55
+    ```
