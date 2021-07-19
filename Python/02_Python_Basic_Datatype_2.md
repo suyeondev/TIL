@@ -391,15 +391,17 @@ False # copy함수로 리스트 복사해서 서로 다른 리스트기 때문�
 
 👉참고 !  - range를 사용하다가 type에 문제가 있을 수 있어서 list를 씌워줘서 형변환 해줘야하는 경우도 있음. ex) list(range(1,101))
 
+
+
 ## 튜플 (tuple)
 
 - 순서O, 중복O → 인덱싱과 슬라이싱이 가능하다.
 
-- 수정X, 삭제X  → 불변 (immutable)
+- 수정X, 삭제X  → **불변 (immutable)**
 
 - 읽기 전용
 
-- 선언 방법 :  **(),  tuple()**
+- 선언 방법 :  **(),  tuple()** 각 값은 콤마( , ) 로 구분해준다.
 
   ```python
   >>>a = (3)
@@ -420,248 +422,291 @@ False # copy함수로 리스트 복사해서 서로 다른 리스트기 때문�
   # myTuple[0] = 10
   
   #print(myTuple) # TypeError: 'tuple' object does not support item assignment 라는 오류가 뜸.
-  myTuple = 1,2,3,4,5
-  myList= list(myTuple) # 이런식으로 리스트로 만들어줘서 새로운 변수에 담으면 수정, 삭제 가능
+  >>>myTuple = 1,2,3,4,5
+  >>>myList= list(myTuple) # 이런식으로 리스트로 만들어줘서 새로운 변수에 담으면 수정, 삭제 가능
   myList[0] = 10
-  print('append - ' , myList)
+  >>>print('append - ' , myList) # 수정사항 확인.
+  append -  [10, 2, 3, 4, 5]
+  >>>print('4의 index' , myTuple.index(4)) # myTuple에서 4의 index
+  4의 index 3
+  >>>print('4의 개수', myTuple.count(4))  # myTuple에서 4의 개수
+  4의 개수 1
+  
+  # 1 ~ 99까지의 정수 중 짝수만 튜플에 저장한다면?
+  >>>data = tuple(range(2,100,2) )
+  >>>print(data, type(data))
+  (2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98) <class 'tuple'>
+  
+  ```
   
   
-  print('index -' , myTuple.index(4))
-  print('count - ', myTuple.count(4))
+
+#### Packing, Unpacking
+
+- 리스트와 튜플을 사용하면, 변수 여러 개를 한번에 만들 수 있다. 
+- **packing** : 변수에 리스트 또는 튜플을 할당하는 과정.
+- **unpacking** : 리스트와 튜플의 요소를 변수 여러개에 할당하는 것 ⇒각각의 변수에 풀어놓는 것.
+  - unpacking할때 주의사항!
+    - 변수의 개수와 리스트 또는 튜플의 요소 개수가 같아야 한다 ⇒**좌변과 우변의 개수가 같아야 함!**
+    - 좌변과 우변의 개수가 안맞는데도 가능한 경우가 있음 , *** 사용하면 개수가 같지 않더라도 unpacking이 가능!**
+
+```python
+# packing & unpacking
+
+>>>a = (1,2,3) # packing
+>>>b,c,d = (4,5,6) # unpacking
+>>>print(a,b,c,d, type(a), type(b))
+(1, 2, 3) 4 5 6 <class 'tuple'> <class 'int'> # packing으로 할당한 것은 타입이 tuple이고, unpacking으로 할당한 것은 int형인 것을 알 수 있다.
+
+# 좌변과 우변의 개수가 다른데도 가능한 경우
+a,b,*c = (0,1,2,3,4,5) # *를 붙여준 함수에 나머지 할당
+print(a,b,c, type(a), type(b), type(c)) 
+0 1 [2, 3, 4, 5] <class 'int'> <class 'int'> <class 'list'>
+
+a, *b, c = (0,1,2,3,4,5) # 알아서 내부적으로 개수 맞춰줌. *없는 변수들은 각각 1개씩 할당 후 *붙여준 변수에 나머지 개수를 할당.
+print(a, b, c, type(a), type(b), type(c)) 
+0 [1, 2, 3, 4] 5 <class 'int'> <class 'list'> <class 'int'>
+```
+
+
+
+# dictionary {key : value}
+- 순서X , 키 중복 허용 X (키 - 값은 1:1대응)
+  - 순서가 없어서 **인덱싱이 불가능! → key값으로 데이터에 접근해야함.**
+
+- 수정O , 삭제O
+
+- 선언 방법 : **{} , dict()**
+  - **딕셔너리 = { 키1 : 값1, 키2 : 값2}**
+  - **딕셔너리 = dict( 키1 = 값1, 키2 = 값2 )**
+  - **딕셔너리 = dict(zip([키1, 키2], [값1, 값2] ))**
+  - **딕셔너리 = dict( [ (키1, 값1), (키2, 값2) ] )**
+  - 중괄호{ } 안에 **키 : 값** 형식으로 저장하며 각 키와 값은 콤마( , ) 로 구분
+  - 키에는 리스트, 딕셔너리 사용X
+
+```python
+>>>exDict = {} # 빈 딕셔너리 할당
+>>>print(exDict, type(exDict)) # 빈딕셔너리 출력, 타입확인
+{} <class 'dict'>
+
+>>>exDict1 = {
+    'one' : 1, 'two': 2, 'three' : 3, 'four' : 4
+}
+>>>print(exDict1, type(exDcit1)) 
+{'one': 1, 'two': 2, 'three': 3, 'four': 4} <class 'dict'>
+
+# dict함수로 dictionary만들기
+>>>exDict2 = dict(one = 1, two = 2, three = 3, four = 4)
+>>>print(exDict2,type(exDict2))
+{'one': 1, 'two': 2, 'three': 3, 'four': 4} <class 'dict'>
+
+# key값이 중복된다면?
+>>>exDict3 = {
+    'one' : 1, 'one' : 5 ,'two': 2, 'three' : 3, 'four' : 4
+}
+>>>print(exDict3, type(exDict3))
+{'one': 5, 'two': 2, 'three': 3, 'four': 4} <class 'dict'> # 키가 중복되면 중복되는 값 중 가장 뒤에 있던 값만 사용.
+```
+
+#### in 연산자
+
+- 키 유무 검사할 수 있다.
+
+  ```python
+  >>>fruitDict = {
+      'melon'    : ['멜론',20000,'green'], # 영어명 : [한글명,가격(1개),색] 
+      'apple'   : ['사과',3000,'red'],
+      'orange'     : ['오렌지',1000,'yellow']
+  }
+  >>>print(type(fruitDict))
+  <class 'dict'>
+  
+  >>>print('melona' in fruitDict) # melona라는 키값이 있는 지 확인
+  False
+  
+  >>>print('apple' in fruitDict)
+  True
+  
+  # 데이터 접근 방식 -> 키로 접근 가능!
+  >>>print(fruitDict[0])
+  KeyError: 0 # 딕셔너리는 인덱싱이 불가능해서 키에러가 발생.
+  
+  >>>print(fruitDict.get('address')) # get함수 이용하여 가져올수도 있음.
+  None #해당 key 값이 없을때 None 출력
+  >>>print(fruitDict['melon'], type(fruitDict['melon']))
+  ['멜론', 20000, 'green'] <class 'list'> # 리스트로 반환되기 때문에 인덱싱이 가능하다!
+  
+  
+  >>>print('멜론은 %s색이고, 1개 기준 가격은 %d입니다.' % (fruitDict['melon'][2],fruitDict['melon'][1]))
+  멜론은 green색이고, 1개 기준 가격은 20000입니다.
+  
+  #format방식으로
+  print('멜론은 {}색이고, 1개 기준 가격은 {}입니다.'.format(fruitDict['melon'][2],fruitDict['melon'][1]))
+  멜론은 green색이고, 1개 기준 가격은 20000입니다.
+  
+  # 사과 가격을 10% 인상시키려면? 
+  >>>fruitDict['apple'][1] = fruitDict['apple'][1] * 1.1
+  >>>print(fruitDict)
+  {'melon': ['멜론', 20000, 'green'], 'apple': ['사과', 3300.0000000000005, 'red'], 'orange': ['오렌지', 1000, 'yellow']}
+  
+  # 요소를 추가한다면?
+  >>>fruitDict.update({'grape' : ['포도',10000,'purple']})
+  >>>print(fruitDict)
+  {'melon': ['멜론', 20000, 'green'], 'apple': ['사과', 3300.0000000000005, 'red'], 'orange': ['오렌지', 1000, 'yellow'], 'grape': ['포도', 10000, 'purple']}
+  
   ```
 
   
 
+#### zip 함수 
 
+- 반복가능한 객체 여러개를 넣으면 요소 순서대로 튜플로 묶어서 zip객체를 반환.
 
-
-
-
-# 1 ~ 99까지의 정수 중 짝수만 튜플에 저장한다면?
-
-data = tuple(range(2,100,2) )
-print(data, type(data))
-
-
-# Packing, Unpacking
-
-a,b,c = (1,2,3)
-print(a,b,c, type(a))
-
-packing = ('최동렬' , '조수연' ,'강려명' ,'섭섭이')
-# unpaking 할때는 좌변과 우변의 개수가 맞아야 함! - 각각의 변수에 풀어놓는 걸 unpacking이라고 함.
-k,j,g,s =packing
-print(k,j,g,s)
-
-# 좌변과 우변의 개수가 안맞는데도 가능한 경우가 있음 , * 사용하면 개수가 같지 않더라도 unpacking이 가능하다.
-
-a,b,*c = (0,1,2,3,4,5) # *를 붙여준 함수에 나머지 할당
-print(a,b,c, type(a), type(b), type(c)) # 0 1 [2, 3, 4, 5] <class 'int'> <class 'int'> <class 'list'>
-
-a, *b, c = (0,1,2,3,4,5) # 알아서 내부적으로 개수 맞춰줌. *붙여준 변수에 나머지 개수를 할당.
-print(a, b, c, type(a), type(b), type(c)) # 0 [1, 2, 3, 4] 5 <class 'int'> <class 'list'> <class 'int'>
-
-# dict(key : value)
-# 순서X , 키 중복 허용 X
-# 수정O , 삭제O
-# 만드는 방법 : {} , dict{}
-# 순서가 없어서 인덱싱이 안됨 -> key값으로 데이터에 접근해야함.
-
-tmpDict = {}
-print(tmpDict, type(tmpDict))
-
-tmpDict = {
-    'name' : 'jslim',
-    'address' : 'seoul'
-}
-# in 연산자
-# 키 유무 검사할 수 있다.
-print('name' in tmpDict) # True 리턴
-print('birth' in tmpDict) # False 리턴
-
-iceDict = {
-    'melona'    : [300, 20],
-    'bibibig'   : [400,20],
-    'bravo'     : [100, 50]
-}
-print(iceDict,type(iceDict))
-# 키로 접근 가능
-iceDict['melona'] #[300, 20]로 반환 이값은 리스트 이므로 인덱싱 가능
-
-print('메로나의 가격은 %d 이고 수량은 %d 개입니다.' % (iceDict['melona'][0],iceDict['melona'][1]))
-print('메로나의 가격은 {} 이고 수량은 {} 개입니다.'.format(iceDict['melona'][0],iceDict['melona'][1]))
-
-# 메로나 가격을 인상한다
-iceDict['melona'][0] = iceDict['melona'][0] * 1.1
-print(iceDict)
-#dict()로 dictionary 만드는 방법
-tmpDict = dict([
-    ('city','seoul'), ('age','27')
-])
-
-tmpDict = dict(
-    city = 'seoul',
-    age = 27
-)
-print(tmpDict, type(tmpDict))
-print('key를 이용한 값 출력 - ', tmpDict['city'])
-# print('key를 이용한 값 출력 - ', tmpDict.get[0]) --error 순서가 없으니까 이런식의 인덱싱 불가능
-print('key를 이용한 값 출력 - ', tmpDict.get('address')) # get함수 이용하여 가져올수도 있는데 해당 key 값이 없을때 None 출력
-
-# 요소를 추가한다면?
-tmpDict.update({'name' : 'jslim'})
-print('update - ', tmpDict, type(tmpDict))
-
-# zip
-# 아래 두개의 튜플을 하나의 딕셔너리로 만들고 싶다면?
+```python
+#아래 두개의 튜플을 하나의 딕셔너리로 만들고 싶다면?
 keys = ('apple','pear','peach')
 vals = (1000,1500,2000)
-# zip모를때 forloop활용해서
-zipDict ={}
-for i in range(len(keys)):
-    zipDict.update( {keys[i] : vals[i]} )
 
-print('zipDict - ' , zipDict, type(zipDict))
+# zip 사용X, forloop활용해서
+>>>zipDict ={}
+>>>for i in range(len(keys)):
+    	zipDict.update( {keys[i] : vals[i]} )
 
-#zip 알때 단, zip 사용할때는 개수가 같아야함! - 리스트의 경우에도 사용 가능
-zipDict = dict(zip(keys, vals))
-print('zipDict - ' , zipDict, type(zipDict))
+>>>print(zipDict, type(zipDict))
+{'apple': 1000, 'pear': 1500, 'peach': 2000} <class 'dict'>
+
+#zip 사용할때. 단, zip 사용할때는 개수가 같아야함! - 리스트의 경우에도 사용 가능
+>>>zipDict2 = dict(zip(keys, vals))
+>>>print(zipDict2, type(zipDict2))
+{'apple': 1000, 'pear': 1500, 'peach': 2000} <class 'dict'>
+
+```
 
 
-tmpDict = dict([
-    ('city','seoul'), ('age','27')
-])
-print(dir(tmpDict))
 
-# dict_keys, dict_values
-# dict_items - key,value 한꺼번에 가져오기
-print(tmpDict)
+#### dict_keys() , dict_values(), dict_items()
 
-for key in tmpDict.keys():
-    print(key)
-for value in tmpDict.values():
-    print(value)
+- dict_keys() : key값 가져오기
+- dict_values() : value값 가져오기
+- dict_items() : key,value 한꺼번에 가져오기
 
-for key, value in tmpDict.items():
-    print(key, value)  # 내부적으로 언패킹한것.
+```python
+zipDcit = {'apple': 1000, 'pear': 1500, 'peach': 2000}
 
-for key, value in tmpDict.items():
-    print('{} : {}'.format(key, value))
+>>>for key in zipDict.keys():
+    	print(key)
+apple
+pear
+peach
+
+>>>for value in zipDict.values():
+    	print(value)
+1000
+1500
+2000
+
+>>>for key, value in zipDict.items():
+    	print(key, value)  # 내부적으로 언패킹한것.
+apple 1000
+pear 1500
+peach 2000
+
+>>>for key, value in zipDict.items():
+    	print('{} : {}'.format(key, value))
+apple : 1000
+pear : 1500
+peach : 2000
+
     
-# 없애기 - clear() 함수 활용해서 다 없애기
-tmpDict.clear()
-print(tmpDict) 
-# pop - 요소를 꺼내고 없애는 것
+```
+
+
+
+#### 삭제 - pop() , clear()
+
+- **pop ()** : 요소를 꺼내고 없애는 것
+- **clear()** : 다 없애기
+
+```python
+# pop함수 사용해서 삭제
+>>>zipDcit = {'apple': 1000, 'pear': 1500, 'peach': 2000}
+>>>zipDict.pop('apple') # apple 삭제
+1000 #value값 반환 후 삭제라서 반환된 것
+
+>>>print(zipDict)
+{'pear': 1500, 'peach': 2000}
+
+# clear함수 사용해서 삭제
+>>>zipDict.clear() # zipDict 내용 다 삭제
+>>>print(zipDict)
+{} # 빈 딕셔너리 출력됨.
+```
+
+
 
 # set : 집합의 자료형
-# 순서X, 중복 허용X -> 필터링 하기 좋음
-# 선언 방법1 : {} - 키 없이 원소만 나열 되어 있는 경우엔 set으로 봄
-# 선언 방법 2 : set() - set함수 안에 자료형이 list형이어야 함.
+- 순서X, 중복 허용X → 필터링 하기 좋음 , 인덱싱은 불가능
 
-tmpSet = {1,2,3,3,3,3,'jslim'} # 다른 데이터형도 가능
-print(tmpSet,type(tmpSet))  #{1, 2, 3} <class 'set'> 중복되어 있는 3 값이 1번만 나옴.
+- 선언 방법 : **{} , set()**
+  - **{}** :  키 없이 원소만 나열 되어 있는 경우엔 set으로 봄
+  -  **set()** : set함수 안에 자료형이 list형이어야 함.
 
-#set함수 안에 자료형이 list형이어야 함.
+```python 
+# {} 사용해서 set선언
+>>>tmpSet = {1,2,3,3,3,3,'가나다라'} # 다른 데이터형도 가능
+>>>print(tmpSet,type(tmpSet))  
+{1, 2, 3, '가나다라'} <class 'set'> # 중복되어 있는 3 값이 1번만 나옴.
 
-tmpSet = set([1,2,3,4,4,'jslim'])
-print(tmpSet, type(tmpSet))
-# print(tmpSet[0]) -- error  순서가 없어서 인덱싱X
+# set()로 set선언 - set함수 안에 자료형이 list형이어야 함.
+>>>tmpSet1 = set([1,2,3,4,4,'가나다라'])
+>>>print(tmpSet1, type(tmpSet1))
+{1, 2, 3, 4, '가나다라'} <class 'set'>
 
-tmpT = tuple(tmpSet)
-print(tmpT,type(tmpT))
-print(tmpT,type(tmpT))
-tmpL = list(tmpT)
-print(tmpL, type(tmpL))
+>>>print(tmpSet[0]) 
+TypeError: 'set' object is not subscriptable # 순서가 없어서 인덱싱X
 
-s01 = set([1,2,3,4,5,6])
-s02 = set([4,5,6,7,8,9])
+>>>tmpT = tuple(tmpSet) # set을 tuple로 변환.
+>>>print(tmpT,type(tmpT))
+(1, 2, 3, '가나다라') <class 'tuple'>
 
-# 교집합(intersection) & , 합집합(union) | , 차집합(difference) -
-print('교집합(intersection) - ',s01.intersection(s02) ,s01&s02)
-print('합집합(union) - ', s01.union(s02), s01|s02)
-print('차집합(difference) - ', s01.difference(s02), s01-s02)
-
-gender = ['남','남','남','여','남','여','남']
-sgender = set(gender)
-print(sgender) # {'남', '여'} 리턴
-
-lgender = list(sgender) # 다시 list로 만들어서 indexing 가능하다.
-print(lgender)
-
-lst = list(range(1,101))
-print('lst - ',lst)
-slst = set(lst)
-print('slst - ' , slst )
-
-for value in slst:
-    print(value, end = ' ')
-
-# 단어의 빈도수를 구해보자
-# {love : 2, jslim :2, cat : 2, word : 1, lucky:3}
-word_dict = {}
-word_list = ['love','jslim','cat','cat','jslim', 'word','love','lucky','lucky','lucky']
-word_keys = set(word_list)
-word_values = [word_list.count(word) for word in word_keys]
-word_dict = dict(zip(word_keys, word_values))
-print(word_dict)
-
-word_keys = set(word_list)
-
-word_Dict = dict(zip(word_keys, word_vals))
-
-wc = {}
-for word in word_list:
-    wc[word] = wc.get(word, 0 ) +1
-print('wc' ,wc)
-
-# case 01
-dict(zip(set(word_list),[word_list.count(i) for i in set(word_list)]))
-
-# case 02
-word_set = list(set(word_list))
-tmpDict ={}
-for i in word_set :
-    tmpDict.update({i : word_list.count(i)})
-
-print(tmpDict)
-
-# case 03
-word_list = ['love','jslim','cat','cat','jslim','word','love','lucky','lucky','lucky']
-word_set = set(word_list)
-
-word_cnt = {}
-for word in word_set:
-    cnt = 0
-    for i in range(len(word_list)):
-        if word_list[i] == word:
-            cnt +=1
-    word_cnt[word] = cnt
-print(word_cnt)
+>>>tmpL = list(tmpT) # tmpL을 list로 변환. 
+>>>print(tmpL, type(tmpL))
+[1, 2, 3, '가나다라'] <class 'list'>
+```
 
 
 
+#### 교집합(intersection) & , 합집합(union) | , 차집합(difference) -
+
+```python
+>>>s01 = set([1,2,3,4,5,6])
+>>>s02 = set([4,5,6,7,8,9])
+
+>>>print('교집합 : ',s01.intersection(s02) ,s01&s02)
+교집합 :  {4, 5, 6} {4, 5, 6}
+
+>>>print('합집합 : ', s01.union(s02), s01|s02)
+합집합 :  {1, 2, 3, 4, 5, 6, 7, 8, 9} {1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+>>>print('차집합 : ', s01.difference(s02), s01-s02)
+차집합 :  {1, 2, 3} {1, 2, 3}
 
 
+>>>gender = ['남','남','남','여','남','여','남']
+>>>sgender = set(gender)
+>>>print(sgender) 
+{'남', '여'} # 중복되는 값은 1번만 
 
+>>>lgender = list(sgender) # 다시 list로 만들어서 indexing 가능하다.
+>>>print(lgender)
+['남', '여']
 
-# tap으로 들여쓰기해줘야 함.
+>>>exlist = list(range(1,5)) # exlist생성
+>>>print('exlist:', exlist)
+exlist: [1, 2, 3, 4, 5]
+    
+>>>exset = set(exlist) # exlist를 set으로 변환 
+>>>print('exset:', exset)
+exset: {1, 2, 3, 4, 5}
+```
 
-# 파이썬은 중괄호 없어서, : 으로 블록 만들어주는 것.
-
-for idx in tmpRange :
-    print(idx, end='\t')
-#import는 모듈을 가져오는 것. 각 모듈안에 함수들이 있음
-import random
-
-tmpList = []
-for idx in range(5) :
-    tmpList.append(random.randint(1,5))
-
-print('tmpList - ', tmpList)
-
-if 4 in tmpList :
-    print('ok')
-else :
-    print('fail')
-
-'''
