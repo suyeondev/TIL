@@ -258,3 +258,79 @@ down
 
 
 
+### break, continue로 반복문 제어하기
+
+- break : 제어흐름 중단 (반복문에서 빠져 나오기 위해 사용)  
+
+- continue : 제어흐름 유지, 코드 실행만 건너뜀
+
+```python
+# for에서 break로 반복문 끝내기
+for i in range(100):    # 0부터 99까지 반복
+    print(i)
+    if i == 10:    # i가 10일 때
+        break
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+# while에서 break로 반복문 끝내기
+>>>i = 0
+>>>while True:    # 무한 루프
+		print(i)
+    	i += 1          # i를 1씩 증가시킴
+    	if i == 10:    # i가 10일 때
+        	break 		# 반복문을 끝냄.   
+        
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+
+# for에서 continue로 코드 실행 건너뛰기
+for i in range(10):
+    if i == 5: # 5일때 코드 실행 건너뛰기
+        continue 
+    print(i) # 5만빼고 출력됨.
+0
+1
+2
+3
+4
+6
+7
+8
+9
+
+# while 반복문에서 continue로 코드 실행 건너뛰기
+i = 0
+while i < 10: 	# i가 0부터 9인 경우까지
+    i += 1
+    if i == 5: # 5일때 코드 실행 건너뜀
+        continue
+    print(i)
+1
+2
+3
+4
+6
+7
+8
+9
+10
+
+```
