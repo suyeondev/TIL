@@ -1,83 +1,90 @@
 # 07. Function 
 
-# 제어구문 & 반복구문
+### 제어구문 - if, switch
 
-# 제어구문 - if, switch
+- if 
 
-# 반복구문 - for, while, do - while
+- if - else 
 
-# if ,if - else ,if - else if - else
+- if - else if - else
 
-# 단일조건일 경우 ifelse(조건, T일때, F일때)
+  - 형식 
 
-data.logical <- T
+    - **if (조건식 -T/F를 return해야함){**
 
-#if(조건식 -T/F를 return해야함.){
+      **}else if (조건식){**
 
-#  
+      **}else if(조건식){**
 
-#}else{
+      **}else{**
 
-#  
+      **}**
 
-#}
+- 단일조건일 경우, **ifelse(조건, T일때, F일때)**
 
-if(data.logical){
-  print("true")
-}else{
-  print("false")
-}
-score <- 55
-if(score >= 60){
-  print("합격")
-}else{
-  print("불합격")
-}
+```R
+# if-else 예시
+> score <- 55
+> if(score >= 60){
+    print("합격")
+  }else{
+    print("불합격")
+  }
+[1] "불합격"
 
-#scan() - console로부터 데이터 입력받는 함수
+# if - else if - else 예시
+# scan() - console로부터 데이터 입력받는 함수
 
-grade <-""
+>grade <-""
 
-if (score >= 90){
-  grade <-"A"
-}else if(score>=80){
-  grade <-"B"
-}else if(score>=70){
-  grade <-"C"
-}else if(score>=60){
-  grade <-"D"
-}else {
-  grade <-"F"
-}
-grade
+>if (score >= 90){
+   grade <-"A"
+ }else if(score>=80){
+   grade <-"B"
+ }else if(score>=70){
+   grade <-"C"
+ }else if(score>=60){
+   grade <-"D"
+ }else {
+   grade <-"F"
+ }
+>grade
+[1] "F"
 
-cat("당신의 점수는", score,"점이고, 당신의 학점은 ",grade,"입니다.")
-sprintf("당신의 점수는 %d 이고, 당신의 학점은 %s입니다",score,grade)
+>cat("당신의 점수는", score,"점이고, 당신의 학점은 ",grade,"입니다.")
+당신의 점수는 55 점이고, 당신의 학점은  F 입니다.
 
+>sprintf("당신의 점수는 %d 이고, 당신의 학점은 %s입니다",score,grade)
+[1] "당신의 점수는 55 이고, 당신의 학점은 F입니다"
+
+# ifelse 예시  ->입력도 벡터고, 출력도 벡터일때만 가능!
 #주민번호를 가지고 남자 여자를 구분한다면?
-user.ssn<- "730910-1xxxxxx"
-str_sub(user.ssn,8)
-gender <- substr(user.ssn,8,8)
+>user.ssn<- "000101-1xxxxxx"
+>str_sub(user.ssn,8)
+>gender <- substr(user.ssn,8,8)
 
-if(gender == '1' |gender =='3'){
-  print('남자')
-}else{
-  print('여자')
-}
+>ifelse(gender =='1'|gender =='3','남자','여자')
+[1] "남자"
 
-
-#ifelse  ->입력도 벡터고, 출력도 벡터일때만 가능!
-ifelse(gender =='1'|gender =='3','남자','여자')
-
-scores <- c(96,91,100,88,90)
-ifelse(scores >= 90, 'pass', 'fail')
-
-#평균을 구한다면?
+# ifelse 예시2
+# 평균을 구한다면?
 na.vec <-c(96,91,100,88,90,NA,95,100,NA,90)
 
-
 ifelse(sum(is.na(na.vec))>=1, mean(na.vec,na.rm =T))
-ifelse(is.na(na.vec), mean(na.vec,na.rm =T), mean(na.vec))
+[1] 93.75
+
+```
+
+
+
+
+
+
+
+
+
+
+
 #외부파일 불러오기
 tmp.csv <- read.csv(file.choose())
 str(tmp.csv)
@@ -102,7 +109,6 @@ x
 which(x==6) #x가 6인 값의 인덱스번호 리턴
 tmp.csv[which(tmp.csv$State == 'Hawaii'),]
 
-
 #switch(data,case 구문,case 구문,case 구문) 동등비교의 조건
 user.name <- scan(what = character())  #what = 으로 들어올수 있는 데이터 형 지정해주는 것.
 user.name
@@ -111,6 +117,18 @@ switch(user.name,
        '섭섭해'=30,
        '입정섭'=40,
        '임섭순'=50)
+
+
+
+
+
+
+
+
+
+### 반복구문 - for, while, do - while
+
+
 
 #반복문 - for
 #for(변수 in 시퀀스 값){
