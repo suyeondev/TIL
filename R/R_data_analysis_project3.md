@@ -50,7 +50,24 @@ bar_korea_count<-barplot(status_table$open,
         border="white")
 text(bar_korea_count, status_table$open, labels=status_table$open, pos = 3)
 
+
+ 
+
+```
+
+
+
+![image-20210806161325687](R_data_analysis_project3.assets/image-20210806161325687.png)
+
+<그래프 1 - 주요 관광지점 입장객 통계자료의 조사지점 수를 연도별로 비교한 그래프 >
+
+**해석 :** 코로나 전을 2019년, 코로나 후를 2020년으로 보았고, 전국의 조사지점 수의 총량은 2020년에 전년 대비 155개가 증가하였다. 
+
+
+
+```R
 library(ggplot2)
+
 # 2020년 총 조사지점수와 새로 개장, 폐장 수 시각화 
 ggplot(status_table_reverse,aes(x=status, y = `2020`,fill=status))+
   geom_bar(stat = "identity")+
@@ -61,37 +78,27 @@ ggplot(status_table_reverse,aes(x=status, y = `2020`,fill=status))+
             vjust = -0.5)+
   labs(fill = "분류")+
   xlab("")+
-  ylab("count")
-    
-  
-
-# 지역별 조사지점 수 변화
-Area_count<- as.data.frame(korea_data_count %>%
-                              group_by(시도) %>%
-                                filter(`내/외국인` == '합계') %>%
-                                  summarise(new_opened = sum(ifelse(new_open == "new open", 1, 0)),
-                                            closed = sum(ifelse(closed == "closed",1,0))))
-
-# 시도별 새로 개업한 관광지점 수 - 폐장한 관광지점 수 시각화
-
-ggplot(Area_count, aes(x=시도,y=(new_opened-closed), fill = 시도))+
-  geom_bar(stat="identity")+
-  geom_text(aes(y=(new_opened-closed),label=(new_opened-closed)), 
-            position = position_dodge(width = 1.8),
-            vjust=-0.5)+
-  ggtitle("시도별 새로 개업한 관광지점 수 - 폐장한 관광지점 수 (2020)")
-
-
-
-
+  ylab("count")    
 ```
+
+
+
+![image-20210806161355033](R_data_analysis_project3.assets/image-20210806161355033.png)
+
+<그래프2 - 2020년 조사지점 총량을 세분화해서 표현한 그래프>
+
+**해석:** 2020년 전국 조사지점 수는 전년대비 새로 개장한 지점이 176개, 폐장한 지점이 21개이고, 전체적으로는 155개가 증가한 것을 확인할 수 있다.
+
+→ 통계자료의 결측값을 활용하여 알아낸 결과로 입장객 수의 통계자료이므로 결측값은 관광지점 휴장상태/개장 전 상태/폐장 후 상태 중 하나라고 해석할 수 있다. (ex.2019년엔 na값이었다가 2020년에 수치 값이 있다면, 2020년부터 운영을 시작한 것) 따라서, 유의미한 결측값으로 보고 삭제나, 다른 값으로 대체하지 않았다.
+
+-  분류부분 해석
+  - 폐장 = 2019값 결측값X & 2020년 결측값O
+
+  - 새로 개장 = 2019 결측값O & 2020년 결측값 X
+  - 총지점수 = 2020년 총 조사지점 수
+
+
 
 #### 3 - 1 결론 
 
-  코로나 전을 2019년, 코로나 후를 2020년으로 보았을때,  2020년 전국 조사지점 수는 전년대비 새로 개장한 지점이 176개, 폐장한 지점이 21개이고, 전체적으로는 155개가 증가한 것을 확인할 수 있다.
-
- 따라서, 코로나 19가 전국 조사지점수에는 예상보다 큰 영향을 미치지 않은 것으로 추정된다.
-
- 지역별로 더 자세히 살펴 봤을때, 새로 개장한 지점이 가장 많은 지역은 전라남도로 36개이고, 폐장한 지점이 가장 많은 지역 역시 전라남도로 7개인 것을 볼때, 폐장한 지점이 가장 많지만 새로 개장한 지점의 개수가 훨씬 더 높으므로, 큰 타격이 없었을 거라고 예상된다.
-
- <시도별 새로 개업한 관광지점 수 - 폐장한 관광지점 수>를 통해  새로 개장한 지점수보다 폐장한 지점수가 더 많은 울산 광역시가 타격이 큰편이고, 가장 타격이 적었던 지역은 경기도라고 추정해볼 수 있다. 
+   새로 개장한 지점수가 176개로 폐장한 지점수인 21개보다 비교적 더 많기 때문에 코로나 19가 전국 조사지점 수에는 예상보다 큰 영향을 미치지 않은 것으로 추정된다. 폐장한 곳보다 오히려 새로 개장한 곳이 더 많으므로 코로나로 인해 폐장했다고 보기엔 무리가 있을 것 같다.
