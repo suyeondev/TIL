@@ -15,6 +15,9 @@
 
 # 코로나 전후 내국인 관광객과 외국인 관광객 증감추이( 전국 )
 
+library(dplyr)
+library(ggplot2)
+
 local_foreigner <-korea_data %>%
   group_by(`내/외국인`) %>%
   summarise('2019.1' = sum(`2019.01`,na.rm = T),
@@ -55,40 +58,49 @@ local_foreigner <- local_foreigner %>%
   mutate(연도 = ifelse(substr(기간, 1,4)== "2019", 2019,2020),
            월 = substr(기간, 6,7))
 
+# 분석에 용이하게 범주형으로 변환
 local_foreigner$연도 <- as.factor(local_foreigner$연도)
 local_foreigner$월 <- as.factor(local_foreigner$월)
 local_foreigner$내국인 <- as.numeric(local_foreigner$내국인 )
 local_foreigner$외국인 <- as.numeric(local_foreigner$외국인 )
 
-str(local_foreigner)
-# 코로나 전후 외국인 관광객 증감 추세
+# 코로나 전후 내국인 입장객 증감 추세(전국)
+ggplot (local_foreigner, aes(x = 월, group = 연도,  color = 연도) )+
+  geom_line(aes(y=내국인), size = 2)+
+  ggtitle("코로나 전후 내국인 입장객 증감 추세")+
+  geom_point(aes(y=내국인),size = 4)+
+  ylab("내국인입장객 누적합계")+
+  scale_x_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12" ))+
+  theme(legend.text = element_text(size =15, face = "bold"),
+        legend.title = element_text(size =16, face = "bold"),
+        plot.title = element_text(face = "bold", hjust = 0.5, size = 25))
+```
+
+![7.코로나 전후 내국인 입장객 증감 추세](R_data_analysis_project5.assets/7.코로나 전후 내국인 입장객 증감 추세.jpg)
+
+
+
+
+
+```R
+# 코로나 전후 외국인 입장객 증감 추세 (전국)
 ggplot(local_foreigner, aes(x = 월, group = 연도, color = 연도) ) +
   geom_line(aes(y = 외국인),size = 2) +
-  ggtitle("코로나 전후 외국인 관광객 증감 추세")+
+  ggtitle("코로나 전후 외국인 입장객 증감 추세")+
   geom_point(aes(y=외국인),size = 4)+
   scale_x_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12" ))+
+  ylab("외국인입장객 누적합계")+
   theme(legend.text = element_text(size =15, face = "bold"),
         legend.title = element_text(size =16, face = "bold"),
         plot.title = element_text(face = "bold", hjust = 0.5, size = 25))
+```
+
+![8.코로나 전후 외국인 입장객 증감 추세](R_data_analysis_project5.assets/8.코로나 전후 외국인 입장객 증감 추세.jpg)
 
 
 
-# 코로나 전후 내국인 관광객 증감 추세
-ggplot (local_foreigner, aes(x = 월, group = 연도, color = 연도) )+
-  geom_line(aes(y=내국인), size = 2)+
-  ggtitle("코로나 전후 내국인 관광객 증감 추세")+
-  geom_point(aes(y=내국인),size = 4)+
-  scale_x_discrete(limits = c("1","2","3","4","5","6","7","8","9","10","11","12" ))+
-  theme(legend.text = element_text(size =15, face = "bold"),
-        legend.title = element_text(size =16, face = "bold"),
-        plot.title = element_text(face = "bold", hjust = 0.5, size = 25))
-
-
-
-str(local_foreigner)
-str(korea_data)
-
-# 코로나 전후 내국인 관광객과 외국인 관광객 증감폭 확인( 지역별 )
+```R
+# 코로나 전후 내국인 관광객과 외국인 관광객 증감률 확인( 지역별 )
 
 local_foreigner_area <- korea_data %>%
   group_by(시도,`내/외국인`) %>%
@@ -96,59 +108,65 @@ local_foreigner_area <- korea_data %>%
             '2020누적합계' = sum(인원합계_2020,na.rm =T))%>%
   filter(`내/외국인` != "합계")
 
+# 내국인 부분만 추출.
 local_area <- local_foreigner_area %>% 
   filter(`내/외국인` == "내국인")
-
+# 외국인 부분만 추출
 foreigner_area <-  local_foreigner_area %>% 
   filter(`내/외국인` == "외국인") 
 
+# 각 데이터프레임에 증감률 파생변수 생성.
 local_area <- as.data.frame(local_area)
 foreigner_area<- as.data.frame(foreigner_area)
-# 코로나 전후 지역별 내국인 관광객 증감폭 
-ggplot(local_area, aes(x=시도, y = `2019누적합계`-`2020누적합계`, fill= 시도))+
+
+local_area<-local_area %>%
+  mutate(`증감률` =  round((`2020누적합계`-`2019누적합계`)/`2019누적합계`*100,1))
+
+foreigner_area<-foreigner_area%>%
+  mutate(`증감률` =  round((`2020누적합계`-`2019누적합계`)/`2019누적합계`*100,1))
+
+
+# 코로나 전후 지역별 내국인 입장객 증감률 
+ggplot(local_area, aes(x=시도, y = `증감률`, fill= 시도))+
   geom_bar(stat = "identity")+
-  ggtitle("코로나 전후 지역별 내국인 관광객 증감폭",subtitle ="내국인 관광객이 가장 증가/감소한 지역은 어느 곳인가?")+
-  geom_text(aes(y=`2019누적합계`-`2020누적합계`,label=`2019누적합계`-`2020누적합계`), 
+  ggtitle("코로나 전후 지역별 내국인 입장객 증감률",subtitle ="내국인 입장객이 가장 증가/감소한 지역은 어느 곳인가?")+
+  geom_text(aes(y=`증감률`,label=`증감률`), 
             position = position_dodge(width=1),
-            vjust=-0.5,
+            vjust=1,
+            size = 5)+
+  theme(legend.text = element_text(size =15, face = "bold"),
+        legend.title = element_text(size =16, face = "bold"),
+        plot.title = element_text(face = "bold", hjust = 0.5, size = 25),
+        plot.subtitle = element_text(face = "bold", hjust = 0.5, size = 20))
+```
+
+![9.코로나 전후 지역별 내국인 입장객 증감률](R_data_analysis_project5.assets/9.코로나 전후 지역별 내국인 입장객 증감률.jpg)
+
+
+
+```R
+# 코로나 전후 지역별 외국인 관광객 증감률
+
+ggplot(foreigner_area, aes(x=시도, y = `증감률`, fill= 시도))+
+  geom_bar(stat = "identity")+
+  ggtitle("코로나 전후 지역별 외국인 입장객 증감률", subtitle ="외국인 입장객이 가장 증가/감소한 지역은 어느 곳인가?" )+
+  geom_text(aes(y=`증감률`,label=`증감률`), 
+            position = position_dodge(width=1),
+            vjust=1,
             size = 5)+
   theme(legend.text = element_text(size =15, face = "bold"),
         legend.title = element_text(size =16, face = "bold"),
         plot.title = element_text(face = "bold", hjust = 0.5, size = 25),
         plot.subtitle = element_text(face = "bold", hjust = 0.5, size = 20))
 
-# 내국인 관광객의 감소폭이 가장 적은 지역 : 세종특별자치시 (142975명)
-# 내국인 관광객의 감소폭이 가장 큰 지역 : 경기도 (33212432명)
-# 코로나 전후 내국인 관광객의 감소로 타격이 큰 지역 TOP3 : 1.경기도 2. 경상북도 3. 전라남도 
-# 코로나 전후 내국인 관광객의 감소로 타격이 작은 지역 TOP3 : 1. 세종특별자치시 2.대전광역시 3. 울산광역시시
+```
 
-# 코로나 전후 지역별 외국인 관광객 증감폭
-
-ggplot(foreigner_area, aes(x=시도, y = `2019누적합계`-`2020누적합계`, fill= 시도))+
-  geom_bar(stat = "identity")+
-  ggtitle("코로나 전후 지역별 외국인 관광객 증감폭", subtitle ="외국인 관광객이 가장 증가/감소한 지역은 어느 곳인가?" )+
-  geom_text(aes(y=`2019누적합계`-`2020누적합계`,label=`2019누적합계`-`2020누적합계`), 
-            position = position_dodge(width=1),
-            vjust=-0.5,
-            size = 5)+
-  theme(legend.text = element_text(size =15, face = "bold"),
-        legend.title = element_text(size =16, face = "bold"),
-        plot.title = element_text(face = "bold", hjust = 0.5, size = 25),
-        plot.subtitle = element_text(face = "bold", hjust = 0.5, size = 20))
-
-# 외국인 관광객의 감소폭이 가장 적은 지역 : 세종특별 자치시 
-# 외국인 관광객의 감소폭이 가장 큰 지역 : 경기도
-# 코로나 전후 외국인 관광객의 감소로 타격이 큰 지역 TOP3 : 1.경기도 2.서울특별시 3. 강원도 
-# 코로나 전후 외국인 관광객의 감소로 타격이 작은 지역 TOP3 : 1. 세종특별자치시 2. 대전광역시 3. 광주광역시
+![10.코로나 전후 지역별 외국인 입장객 증감률](R_data_analysis_project5.assets/10.코로나 전후 지역별 외국인 입장객 증감률.jpg)
 
 
-# 내국인 관광객에게 인기있는 관광지 상위 5위(2019,2020)
-local_tourist_area_top5_2019<- as.data.frame(korea_data %>%
-                                               group_by(관광지명) %>%
-                                               filter(`내/외국인` == "내국인") %>%
-                                               select(관광지명, `내/외국인`, 인원합계_2019) %>%
-                                               arrange(desc(`인원합계_2019`))%>%
-                                               head(5))
+
+```R
+# 내국인 관광객에게 인기있는 관광지 상위 5위(2020)
 
 local_tourist_area_top5_2020<- as.data.frame(korea_data %>%
                                                group_by(관광지명) %>%
@@ -157,40 +175,32 @@ local_tourist_area_top5_2020<- as.data.frame(korea_data %>%
                                                arrange(desc(`인원합계_2020`))%>%
                                                head(5))
 
+# 비율값 파생변수 생성
+local_tourist_area_top5_2020<-local_tourist_area_top5_2020 %>%
+  mutate(비율 = round((인원합계_2020/sum(인원합계_2020))*100,1))
 
-
-ggplot(local_tourist_area_top5_2019, aes(x="", y = `인원합계_2019`, fill = 관광지명))+
-  geom_bar(width=1, stat = "identity")+
-  coord_polar("y",start = 0)+
-  geom_text(aes(y=`인원합계_2019`,label=paste(관광지명,"\n",`인원합계_2019`)), 
-            position = position_stack(vjust = 0.5),
-            size = 4)+
-  ggtitle("내국인 관광객에게 인기있는 관광지 Top 5 (2019)")+
-  theme(legend.text = element_text(size =13, face = "bold"),
-        legend.title = element_text(size =14, face = "bold"),
-        plot.title = element_text(face = "bold", hjust = 0.5, size = 20))
-
-
+# 내국인 입장객에게 인기있는 관광지 Top 5 (2020) 시각화
 ggplot(local_tourist_area_top5_2020, aes(x="", y = `인원합계_2020`, fill = 관광지명))+
   geom_bar(width=1, stat = "identity")+
   coord_polar("y",start = 0)+
-  geom_text(aes(y=`인원합계_2020`,label=paste(관광지명,"\n",`인원합계_2020`)), 
-            position = position_stack(vjust = 0.5),
-            size = 5)+
-  ggtitle("내국인 관광객에게 인기있는 관광지 Top 5 (2020)")+
-  theme(legend.text = element_text(size =13, face = "bold"),
-        legend.title = element_text(size =14, face = "bold"),
-        plot.title = element_text(face = "bold", hjust = 0.5, size = 20))
+  geom_text(aes(y=`인원합계_2020`,label=paste(관광지명,"\n",`비율`,"% (",`인원합계_2020`,")")), 
+            position = position_stack(vjust = 0.4),
+            size =7)+
+  ggtitle("내국인 입장객에게 인기있는 관광지 Top 5 (2020)")+
+  theme(legend.text = element_text(size =25, face = "bold"),
+        legend.title = element_text(size =27, face = "bold"),
+        plot.title = element_text(face = "bold", hjust = 0.5, size = 30))
+
+```
 
 
 
-# 외국인 관광객에게 인기있는 관광지 상위 5위(2019,2020)
-foreigner_tourist_area_top5_2019<- as.data.frame(korea_data %>%
-                                                   group_by(관광지명) %>%
-                                                   filter(`내/외국인` == "외국인") %>%
-                                                   select(관광지명, `내/외국인`, 인원합계_2019) %>%
-                                                   arrange(desc(`인원합계_2019`))%>%
-                                                   head(5))
+![11.내국인 입장객에게 인기있는 관광지 Top5 (2020)](R_data_analysis_project5.assets/11.내국인 입장객에게 인기있는 관광지 Top5 (2020).jpg)
+
+
+
+```R
+# 외국인 관광객에게 인기있는 관광지 상위 5위(2020)
 
 foreigner_tourist_area_top5_2020<- as.data.frame(korea_data %>%
                                                    group_by(관광지명) %>%
@@ -199,33 +209,25 @@ foreigner_tourist_area_top5_2020<- as.data.frame(korea_data %>%
                                                    arrange(desc(`인원합계_2020`))%>%
                                                    head(5))
 
-
-
-ggplot(foreigner_tourist_area_top5_2019, aes(x="", y = `인원합계_2019`, fill = 관광지명))+
-  geom_bar(width=1, stat = "identity")+
-  coord_polar("y",start = 0)+
-  geom_text(aes(y=`인원합계_2019`,label=paste(관광지명,"\n",`인원합계_2019`)), 
-            position = position_stack(vjust = 0.5),
-            size = 5)+
-  ggtitle("외국인 관광객에게 인기있는 관광지 Top 5 (2019)")+
-  theme(legend.text = element_text(size =13, face = "bold"),
-        legend.title = element_text(size =14, face = "bold"),
-        plot.title = element_text(face = "bold", hjust = 0.5, size = 20))
+# 비율값 파생변수 생성
+foreigner_tourist_area_top5_2020<-foreigner_tourist_area_top5_2020%>%
+  mutate(비율 = round((인원합계_2020/sum(인원합계_2020))*100,1))
 
 
 
-
+# 외국인 입장객에게 인기있는 관광지 Top 5 (2020) 시각화
 
 ggplot(foreigner_tourist_area_top5_2020, aes(x="", y = `인원합계_2020`, fill = 관광지명))+
   geom_bar(width=1, stat = "identity")+
   coord_polar("y",start = 0)+
-  geom_text(aes(y=`인원합계_2020`,label=paste(관광지명,"\n",`인원합계_2020`)), 
+  geom_text(aes(y=`인원합계_2020`,label=paste(관광지명,"\n",`비율`,"% (",`인원합계_2020`,")")), 
             position = position_stack(vjust = 0.5),
-            size = 5)+
-  ggtitle("외국인 관광객에게 인기있는 관광지 Top 5 (2020)")+
-  theme(legend.text = element_text(size =13, face = "bold"),
-        legend.title = element_text(size =14, face = "bold"),
-        plot.title = element_text(face = "bold", hjust = 0.5, size = 20))
-
-
+            size = 7)+
+  ggtitle("외국인 입장객에게 인기있는 관광지 Top 5 (2020)")+
+  theme(legend.text = element_text(size =25, face = "bold"),
+        legend.title = element_text(size =27, face = "bold"),
+        plot.title = element_text(face = "bold", hjust = 0.5, size = 30))
 ```
+
+![12.외국인 입장객에게 인기있는 관광지 Top5(2020)](R_data_analysis_project5.assets/12.외국인 입장객에게 인기있는 관광지 Top5(2020).jpg)
+
