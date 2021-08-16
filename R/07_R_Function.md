@@ -75,90 +75,168 @@ ifelse(sum(is.na(na.vec))>=1, mean(na.vec,na.rm =T))
 
 ```
 
+#### switch 함수
 
 
 
 
 
+- **switch(data,case 구문,case 구문,case 구문)** 동등비교의 조건
 
+  
 
+```R
+> switch('name03',
++        'name01'=30,
++        'name02'=40,
++        'name03'=50)
+[1] 50
 
-
-
-#외부파일 불러오기
-tmp.csv <- read.csv(file.choose())
-str(tmp.csv)
-
-tmp.csv$q5
-q6<-ifelse(tmp.csv$q5 >=3 ,"bigger","smaller")
-table(tmp.csv$q5)
-#파일에 칼럼추가 (전처리과정 중 하나)
-tmp.csv$q6 <- q6
-#factor로 바꿔줌
-tmp.csv$q6 <- as.factor(tmp.csv$q6)
-str(tmp.csv)
-table(tmp.csv$q6) #빈도수 
-with(tmp.csv, tapply(q5,q6,sum))
-
-tmp.csv <- read.csv(file.choose())
-str(tmp.csv)
-#특정 행을 가져와야 한다면, 조건에 만족하는 행 index얻어와야한다.
-x <- c(1,2,3,4,5,6,7)
-x
-
-which(x==6) #x가 6인 값의 인덱스번호 리턴
-tmp.csv[which(tmp.csv$State == 'Hawaii'),]
-
-#switch(data,case 구문,case 구문,case 구문) 동등비교의 조건
-user.name <- scan(what = character())  #what = 으로 들어올수 있는 데이터 형 지정해주는 것.
-user.name
-
-switch(user.name,
-       '섭섭해'=30,
-       '입정섭'=40,
-       '임섭순'=50)
-
-
-
-
-
-
+```
 
 
 
 ### 반복구문 - for, while, do - while
 
+#### for 반복문
 
+##### 형식 : for(변수 in 시퀀스 값){
+##### 			}
 
-#반복문 - for
-#for(변수 in 시퀀스 값){
-#
-#}
-user.sum = 0
-for(n in 1:10){
-  user.sum <- user.sum + n
+```R
+>user.sum = 0
+>for(n in 1:10){
+   user.sum <- user.sum + n
 }
 user.sum
+[1] 55
 
-for(idx in 1:10){
-  if(idx %% 2 != 0){
-    cat(idx,'\t')
+>for(idx in 1:10){
+   if(idx %% 2 != 0){
+     cat(idx,'\t')
 
   }
 }
+1 	3 	5 	7 	9 
 
 # 1~100사이에 홀수, 짝수의 합을 출력한다면?
 
-odd_sum <- 0
-even_sum <- 0
-for(idx in 1:100){
-  if(idx %%2 != 0){
-    odd_sum <- odd_sum +idx
+>odd_sum <- 0
+>even_sum <- 0
+>for(idx in 1:100){
+   if(idx %%2 != 0){
+     odd_sum <- odd_sum +idx
     
-  }else{
-    even_sum <- even_sum + idx
-  }
-}
-cat("odd_sum= ",odd_sum,"even_sum = " ,even_sum)
+   }else{
+     even_sum <- even_sum + idx
+   }
+ }
+>cat("odd_sum= ",odd_sum,"even_sum = " ,even_sum)
+odd_sum=  2500 even_sum =  2550
 
-setequal(c('a','b','c'),c('a','b'))
+```
+
+- 중복 for 반복문
+
+  형식:  for(){ #행에 대한 인덱스
+
+  ​				for(){ #열에 대한 인덱스
+
+  ​				}
+
+  ​			}
+
+```R
+>for(i in 2:9){
+   cat('row i = ' , i ,'\n')
+   for(j in 1:9){
+    
+     cat (i , '*',j ,'=',(i*j),"\t")
+   }
+   cat('\n')
+ }
+
+row i =  2 
+2 * 1 = 2 	2 * 2 = 4 	2 * 3 = 6 	2 * 4 = 8 	2 * 5 = 10 	2 * 6 = 12 	2 * 7 = 14 	2 * 8 = 16 	2 * 9 = 18 	
+row i =  3 
+3 * 1 = 3 	3 * 2 = 6 	3 * 3 = 9 	3 * 4 = 12 	3 * 5 = 15 	3 * 6 = 18 	3 * 7 = 21 	3 * 8 = 24 	3 * 9 = 27 	
+row i =  4 
+4 * 1 = 4 	4 * 2 = 8 	4 * 3 = 12 	4 * 4 = 16 	4 * 5 = 20 	4 * 6 = 24 	4 * 7 = 28 	4 * 8 = 32 	4 * 9 = 36 	
+row i =  5 
+5 * 1 = 5 	5 * 2 = 10 	5 * 3 = 15 	5 * 4 = 20 	5 * 5 = 25 	5 * 6 = 30 	5 * 7 = 35 	5 * 8 = 40 	5 * 9 = 45 	
+row i =  6 
+6 * 1 = 6 	6 * 2 = 12 	6 * 3 = 18 	6 * 4 = 24 	6 * 5 = 30 	6 * 6 = 36 	6 * 7 = 42 	6 * 8 = 48 	6 * 9 = 54 	
+row i =  7 
+7 * 1 = 7 	7 * 2 = 14 	7 * 3 = 21 	7 * 4 = 28 	7 * 5 = 35 	7 * 6 = 42 	7 * 7 = 49 	7 * 8 = 56 	7 * 9 = 63 	
+row i =  8 
+8 * 1 = 8 	8 * 2 = 16 	8 * 3 = 24 	8 * 4 = 32 	8 * 5 = 40 	8 * 6 = 48 	8 * 7 = 56 	8 * 8 = 64 	8 * 9 = 72 	
+row i =  9 
+9 * 1 = 9 	9 * 2 = 18 	9 * 3 = 27 	9 * 4 = 36 	9 * 5 = 45 	9 * 6 = 54 	9 * 7 = 63 	9 * 8 = 72 	9 * 9 = 81 
+
+```
+
+#### while 구문
+
+- while(조건식)  : 조건식에 만족할때만 loop를 돈다. 만족 안할 시엔 빠져나감. 
+-  *** 주의! while loop 안에 변수에 대한 증감이 필요!**
+
+```R
+idx<-1
+while(idx<=10){
+  print(idx)
+  idx = idx + 1
+}
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 8
+[1] 9
+[1] 10
+```
+
+
+
+- break : break만나면 루프 탈출.
+
+- next : continue의 의미로 해당 루프 다시 돌게 만든다 -> 뒷문장은 실행안됨.
+
+- repeat : 반복해줌.
+
+  
+
+```R
+>idx<-1
+  while(idx <= 10){
+    print(idx)
+    if(idx %% 2 != 0){
+      break
+      
+    }
+    idx = idx +1
+ }
+[1] 1
+
+idx <- 1
+repeat{
+  print(idx)
+  if (idx >= 10){
+    break
+  }
+  idx<-idx+1
+}
+[1] 1
+[1] 2
+[1] 3
+[1] 4
+[1] 5
+[1] 6
+[1] 7
+[1] 8
+[1] 9
+[1] 10
+```
+
