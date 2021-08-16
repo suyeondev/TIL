@@ -220,6 +220,16 @@ while(idx<=10){
  }
 [1] 1
 
+```
+
+
+
+#### do-while문
+
+- R에서는 repeat함수로 사용한다.
+- repeat{반복해서 수행할 문장}
+
+```R
 idx <- 1
 repeat{
   print(idx)
