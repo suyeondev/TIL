@@ -76,7 +76,9 @@ ggplot (local_foreigner, aes(x = 월, group = 연도,  color = 연도) )+
         plot.title = element_text(face = "bold", hjust = 0.5, size = 25))
 ```
 
-![7.코로나 전후 내국인 입장객 증감 추세](R_data_analysis_project5.assets/7.코로나 전후 내국인 입장객 증감 추세.jpg)
+
+
+![7 코로나 전후 내국인 입장객 증감 추세](https://user-images.githubusercontent.com/86271820/135999254-e8d520a6-20a7-4491-b937-8928ba2d4970.jpg)
 
 해석 : 코로나가 심해진 2020년 2월부터 급격하게 감소 & 2019년 대비 크게 감소한 모습 확인이 가능하다. 
 
@@ -95,7 +97,9 @@ ggplot(local_foreigner, aes(x = 월, group = 연도, color = 연도) ) +
         plot.title = element_text(face = "bold", hjust = 0.5, size = 25))
 ```
 
-![8.코로나 전후 외국인 입장객 증감 추세](R_data_analysis_project5.assets/8.코로나 전후 외국인 입장객 증감 추세.jpg)
+
+
+![8 코로나 전후 외국인 입장객 증감 추세](https://user-images.githubusercontent.com/86271820/135999356-81d064c0-98b8-4291-aa36-6f270f971222.jpg)
 
 해석 : 코로나가 심해진 2020년 2월부터 급격하게 감소 & 2019년 대비 크게 감소한 모습 확인이 가능하다. 특히 2020년 3월 이후부터 눈에띄게 줄어들어 코로나가 나아지지 않아 이러한 추이가 계속 되고 있는 것으로 추측된다.
 
@@ -142,9 +146,9 @@ ggplot(local_area, aes(x=시도, y = `증감률`, fill= 시도))+
         plot.subtitle = element_text(face = "bold", hjust = 0.5, size = 20))
 ```
 
-![9.코로나 전후 지역별 내국인 입장객 증감률](R_data_analysis_project5.assets/9.코로나 전후 지역별 내국인 입장객 증감률.jpg)
 
 
+![9 코로나 전후 지역별 내국인 입장객 증감률](https://user-images.githubusercontent.com/86271820/135999436-f784f32a-7e8e-49d7-b40d-a0379bee067b.jpg)
 
  **[증감률=(2020누적합계-2019누적합계)/2019누적합계 * 100 ]**
 
@@ -171,7 +175,9 @@ ggplot(foreigner_area, aes(x=시도, y = `증감률`, fill= 시도))+
 
 ```
 
-![10.코로나 전후 지역별 외국인 입장객 증감률](R_data_analysis_project5.assets/10.코로나 전후 지역별 외국인 입장객 증감률.jpg)
+
+
+![10 코로나 전후 지역별 외국인 입장객 증감률](https://user-images.githubusercontent.com/86271820/135999441-c5fe01af-8bc2-4c62-a665-7cf41124e7ce.jpg)
 
 해석 : 세종시를 제외한 모든 지역에서 감소해서 음수값이다. 감소율이 가장 큰 곳은 인천, 가장 작은 곳은 전라남도이다. 세종시의 경우 외국인 입장객 총량이 24명에서 51명으로 증가했지만 수치가 너무 작아서 유의미한 결과로 해석하기엔 무리가 있어 보인다.
 
@@ -207,7 +213,7 @@ ggplot(local_tourist_area_top5_2020, aes(x="", y = `인원합계_2020`, fill = �
 
 
 
-![11.내국인 입장객에게 인기있는 관광지 Top5 (2020)](R_data_analysis_project5.assets/11.내국인 입장객에게 인기있는 관광지 Top5 (2020).jpg)
+![11 내국인 입장객에게 인기있는 관광지 Top5 (2020)](https://user-images.githubusercontent.com/86271820/135999450-094a3c02-c9ec-45e7-9df0-a9b23c7e7900.jpg)
 
 해석 : 자연환경이 주가 되는 관광지를 선호한 것으로 예상된다.
 
@@ -241,7 +247,9 @@ ggplot(foreigner_tourist_area_top5_2020, aes(x="", y = `인원합계_2020`, fill
         plot.title = element_text(face = "bold", hjust = 0.5, size = 30))
 ```
 
-![12.외국인 입장객에게 인기있는 관광지 Top5(2020)](R_data_analysis_project5.assets/12.외국인 입장객에게 인기있는 관광지 Top5(2020).jpg)
+
+
+![12 외국인 입장객에게 인기있는 관광지 Top5(2020)](https://user-images.githubusercontent.com/86271820/135999452-7ed6c4f4-03f1-4924-989f-3e41132eda4d.jpg)
 
 해석 : 비교적 한국의 문화를 경험해볼 수 있는 관광지를 선호한 것으로 예상된다.
 
