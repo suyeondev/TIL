@@ -57,7 +57,7 @@ text(bar_korea_count, status_table$open, labels=status_table$open, pos = 3)
 
 
 
-![image-20210806161325687](R_data_analysis_project3.assets/image-20210806161325687.png)
+![image-20210806161325687](./R_data_analysis_project3.assets/image-20210806161325687.png)
 
 <그래프 1 - 주요 관광지점 입장객 통계자료의 조사지점 수를 연도별로 비교한 그래프 >
 
@@ -83,7 +83,7 @@ ggplot(status_table_reverse,aes(x=status, y = `2020`,fill=status))+
 
 
 
-![image-20210806161355033](R_data_analysis_project3.assets/image-20210806161355033.png)
+![image-20210806161355033](./R_data_analysis_project3.assets/image-20210806161355033.png)
 
 <그래프2 - 2020년 조사지점 총량을 세분화해서 표현한 그래프>
 
