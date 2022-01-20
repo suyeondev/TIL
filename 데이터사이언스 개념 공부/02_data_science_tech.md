@@ -102,7 +102,7 @@ Random Access Memory(RAM) : 계산 결과를 기록해두는 메모리
 
 ![img](https://cdn.epnc.co.kr/news/photo/202102/200319_200223_2515.png)
 
-
+​																							<이미지 자료=아워월드인 데이터, 출처 : 테크월드뉴스(http://www.epnc.co.kr)>
 
 ### 1-5 GPU vs CPU
 
