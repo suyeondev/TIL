@@ -100,7 +100,7 @@ Random Access Memory(RAM) : 계산 결과를 기록해두는 메모리
 
     ⇒ 양자효과는 이미 큰 문제가 되고 있고, 무어의 법칙을 유지하기가 해마다 어려워졌다고 할 수 있을지 모른다.
 
-![img](https://cdn.epnc.co.kr/news/photo/202102/200319_200223_2515.png)
+![200319_200223_2515](https://user-images.githubusercontent.com/86271820/152306766-9c94c94d-3040-4554-8b13-2f5413d48779.png)
 
 ​																							<이미지 자료=아워월드인 데이터, 출처 : 테크월드뉴스(http://www.epnc.co.kr)>
 
