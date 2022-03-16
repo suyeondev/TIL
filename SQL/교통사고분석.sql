@@ -234,3 +234,114 @@ commit;
 -- 데이터 확인 (총 205개의 데이터 입력된 것 확인 완료)
 SELECT * 
 FROM traffic_accident;
+
+
+-- 연대, 교통수단별 총 사고 건수 조회
+-- 19080-2020년까지 5개의 교통수단별 사고 건수와 사망자 수 데이터가 들어있다.
+-- 10년 단위로 데이터 집계해보자! 
+-- 2020년대는 2020년 자료밖에 없으므로 2020년으로 표기! 
+SELECT CASE WHEN YEAR BETWEEN 1980 AND 1989 THEN '1980년대'
+            WHEN YEAR BETWEEN 1990 AND 1999 THEN '1990년대'
+            WHEN YEAR BETWEEN 2000 AND 2009 THEN '2000년대'
+            WHEN YEAR BETWEEN 2010 AND 2019 THEN '2010년대'
+            WHEN YEAR = 2020 THEN '2020년'
+        END AS YEARS,
+        TRANS_TYPE,
+        SUM(TOTAL_ACCT_NUM)AS 사고건수,
+        SUM(DEATH_PERSON_NUM)AS 사망건수        
+FROM    traffic_accident
+GROUP BY CASE WHEN YEAR BETWEEN 1980 AND 1989 THEN '1980년대'
+              WHEN YEAR BETWEEN 1990 AND 1999 THEN '1990년대'
+              WHEN YEAR BETWEEN 2000 AND 2009 THEN '2000년대'
+              WHEN YEAR BETWEEN 2010 AND 2019 THEN '2010년대'
+              WHEN YEAR = 2020 THEN '2020년'
+        END,
+        TRANS_TYPE
+ORDER BY 1,2;
+
+-- 연대별 사고건수 추이 분석
+-- 연대를 컬럼형태로 조회하기
+
+SELECT  TRANS_TYPE,
+        SUM(CASE WHEN YEAR BETWEEN 1980 AND 1989 THEN TOTAL_ACCT_NUM END) AS "1980년대",
+        SUM(CASE WHEN YEAR BETWEEN 1990 AND 1999 THEN TOTAL_ACCT_NUM END) AS "1990년대",
+        SUM(CASE WHEN YEAR BETWEEN 2000 AND 2009 THEN TOTAL_ACCT_NUM END) AS "2000년대",
+        SUM(CASE WHEN YEAR BETWEEN 2010 AND 2019 THEN TOTAL_ACCT_NUM END) AS "2010년대"
+FROM traffic_accident
+GROUP BY TRANS_TYPE
+ORDER BY TRANS_TYPE;
+
+
+/*
+        1980년대     1990년대   2000년대      2010년대   
+선박	    3965	    6605	    7780	    20064	  
+자동차	1646167	    2581517	    2331063	    2227186 	
+지하철	208	        311	        732	        17	        
+철도	    18681	    13415	    5083	    1821       	
+항공기	20	        24	        63	        89	        
+
+선박의 경우 사고건수가 꾸준히 증가한 것을 알 수 있고, 2000년대에서 2010년도로 넘어가면서 크게 증가했다. -선박이 점점 늘어나면서 사고 건수도 늘어난 것으로 추측됨.
+자동차의 경우에도 1990년부터 쭉 2백만건이상으로 가장 많은 비중을 차지하고 있다.
+지하철은 2000년대에 비해 2010년대에 17건으로 크게 감소했다.
+철도는 꾸준히 감소하는 추이를 보이고 있다.
+항공기는 2010년대에 89건으로 사고가 증가한 것을 확인할 수 있다. - 항공기가 점점 늘어나면서 사고 건수도 늘어난 것으로 추측됨.
+*/
+
+-- 연대별 교통수단별 사망자 수 추이 분석
+-- 연대를 컬럼형태로 조회하기
+
+SELECT  TRANS_TYPE,
+        SUM(CASE WHEN YEAR BETWEEN 1980 AND 1989 THEN DEATH_PERSON_NUM END) AS "1980년대",
+        SUM(CASE WHEN YEAR BETWEEN 1990 AND 1999 THEN DEATH_PERSON_NUM END) AS "1990년대",
+        SUM(CASE WHEN YEAR BETWEEN 2000 AND 2009 THEN DEATH_PERSON_NUM END) AS "2000년대",
+        SUM(CASE WHEN YEAR BETWEEN 2010 AND 2019 THEN DEATH_PERSON_NUM END) AS "2010년대"        
+FROM traffic_accident
+GROUP BY TRANS_TYPE
+ORDER BY TRANS_TYPE;
+
+/*
+        1980년대   1990년대     2000년대     2010년대
+선박	    1926	    2012	    1552	    1581
+자동차	78420	    110872	    69907	    46208
+지하철	79	        182	        642	        9
+철도	    7394	    4485	    2392	    801
+항공기	515	        321	        40	        69
+
+자동차에 의한 사망자수가 가장 큰 비중을 차지했고, 철도 사고로 인한 사망자수는 감소추세를 보이고 있다.
+
+*/
+
+
+-- 교통수단별 가장 많은 사망자수가 발생한 연도 구하기
+
+SELECT YEAR,
+       TRANS_TYPE,
+       TOTAL_ACCT_NUM,
+       DEATH_PERSON_NUM
+FROM  traffic_accident
+WHERE DEATH_PERSON_NUM IN (SELECT MAX(DEATH_PERSON_NUM) FROM traffic_accident GROUP BY TRANS_TYPE);
+
+
+-- 다른 방법
+SELECT a.*
+FROM traffic_accident a,
+    (SELECT trans_type, MAX(death_person_num) death_per
+        FROM traffic_accident
+        GROUP BY trans_type
+        ) b
+WHERE a.trans_type = b.trans_type
+AND a.death_person_num = b.death_per;
+
+
+/*
+YEAR    TRANS_TYPE  사고건수    사망자수
+1991	자동차	    265964	    13429
+1981	철도	        1894	    858
+2003	지하철	    103	        256
+1987	선박	        533	        477
+1983	항공기	    5	        276
+
+자동차는 1991년, 철도는 1981년, 지하철은 2003년, 선박은 1987년, 항공기는 1983년에 최대 사망자가 발생했다.
+지하철의 경우 2003년에 대구 지하철 사고가 발생해 사망자가 많이 발생했고,
+항공기의 경우 1983년에 대한항공 여객기가 구소련 전투기에 피격되어 탑승자 전원이 사망한 사고로 사망자가 많이 발생했다.
+*/
