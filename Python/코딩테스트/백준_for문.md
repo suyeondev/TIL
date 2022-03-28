@@ -596,11 +596,39 @@ While 문으로 계속 입력을 받다가 더이상 입력이 없을 때 출력
 
 ```python
 N = input()
+first_N = int(N)
+cnt = 0
 while True:
-    sum = int(N[0]) + int(N[1])
-    if sum < 10:
-        N = N[1]+str(sum)
-        
-        
+    cnt += 1
+    if int(N) >= 10:
+        n_sum = str(int(N[0]) + int(N[1]))
+        N = N[-1] + n_sum[-1]
+        if int(N) == first_N:
+            break
+        else:
+            pass
+    elif int(N) < 10:
+        n_sum = N
+        N = N[-1] + n_sum[-1]
+        if int(N) == first_N:
+            break
+        else:
+            pass
+print(cnt)
+```
+
+```python
+# %, // 을 활용한 좀 더 간결한 버전'
+N = num = int(input())
+count = 0
+while True:
+    ten = N // 10
+    one = N % 10
+    total = ten + one
+    count += 1
+    N = int(str(N % 10) + str(total % 10))
+    if(num == N):
+        break
+print(count)
 ```
 
