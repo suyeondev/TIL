@@ -498,3 +498,70 @@ def dfs(idx, d):
 dfs(0,0)
 ```
 
+
+
+#### 문제번호 : 18290
+
+ ##### 제목 : NM과 K(1)
+
+- 문제 : 크기가 N×M인 격자판의 각 칸에 정수가 하나씩 들어있다. 이 격자판에서 칸 K개를 선택할 것이고, 선택한 칸에 들어있는 수를 모두 더한 값의 최댓값을 구하려고 한다. 단, 선택한 두 칸이 인접하면 안된다. r행 c열에 있는 칸을 (r, c)라고 했을 때, (r-1, c), (r+1, c), (r, c-1), (r, c+1)에 있는 칸이 인접한 칸이다.
+
+- 입력 : 첫째 줄에 N, M, K가 주어진다. 둘째 줄부터 N개의 줄에 격자판에 들어있는 수가 주어진다.
+
+- 출력 : 선택한 칸에 들어있는 수를 모두 더한 값의 최댓값을 출력한다.
+
+- 제한 : 
+
+  - 1 ≤ N, M ≤ 10
+  - 1 ≤ K ≤ min(4, N×M)
+  - 격자판에 들어있는 수는 -10,000보다 크거나 같고, 10,000보다 작거나 같은 정수이다.
+  - 항상 K개의 칸을 선택할 수 있는 경우만 입력으로 주어진다.
+
+- 예제 입력
+
+  ```
+  2 2 2
+  1 2
+  3 4
+  ```
+
+- 예제 출력1
+
+  ```
+  5
+  ```
+
+- 제출 코드
+
+```python
+import sys
+input = sys.stdin.readline
+
+n, m, k = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(n)]
+visited = [[False] * m for _ in range(n)]
+q=[]
+dx = [0, 0, 1, -1]
+dy = [1, -1, 0, 0]
+
+ans = -1000000
+
+def dfs(x, y, d, s):
+    global ans
+    if d == k:
+        ans = max(ans,s)
+        return
+    else:
+        for i in range(x,n):
+            for j in range(y if i == x else 0, m):
+                if [i, j] not in q:
+                    if ([i + 1, j] not in q) and ([i - 1, j] not in q) and ([i, j + 1] not in q) and ([i, j - 1] not in q):
+                        q.append([i, j])
+                        dfs(i, j, d + 1, s + arr[i][j])
+                        q.pop()
+
+dfs(0, 0, 0, 0)
+
+print(ans)
+```
+
